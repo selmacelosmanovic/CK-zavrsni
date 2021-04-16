@@ -154,54 +154,54 @@ public class CKVisitor extends ASTVisitor {
 	}
 
 
-	public boolean visit(AnonymousClassDeclaration node) {
-		java.util.List<String> stringList = new java.util.ArrayList<>();
-		stringList = stringList.stream().map(string -> string.toString()).collect(java.util.stream.Collectors.toList());
-
-		// there might be metrics that use it
-		// (even before an anonymous class is created)
-		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
-		if(!classes.peek().methods.isEmpty())
-			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
-
-		// we give the anonymous class a 'class$AnonymousN' name
-		String anonClassName = classes.peek().result.getClassName() + "$Anonymous" + ++anonymousNumber;
-		CKClassResult currentClass = new CKClassResult(sourceFilePath, anonClassName, "anonymous", -1);
-		currentClass.setLoc(calculate(node.toString()));
-
-		// create a set of visitors, just for the current class
-		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors();
-
-		// store everything in a 'class in the stack' data structure
-		ClassInTheStack classInTheStack = new ClassInTheStack();
-		classInTheStack.result = currentClass;
-		classInTheStack.classLevelMetrics = classLevelMetrics;
-
-		// push it to the stack, so we know the current class we are visiting
-		classes.push(classInTheStack);
-
-		// and there might be metrics that also use the methoddeclaration node.
-		// so, let's call them
-		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
-		if(!classes.peek().methods.isEmpty())
-			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
-
-		return true;
-	}
-
-	public void endVisit(AnonymousClassDeclaration node) {
-
-		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-
-		ClassInTheStack completedClass = classes.pop();
-
-		// persist the results of the class level metrics in the result
-		completedClass.classLevelMetrics.forEach(m -> m.setResult(completedClass.result));
-
-		// we are done processing this class, so now let's
-		// store it in the collected classes set
-		collectedClasses.add(completedClass.result);
-	}
+//	public boolean visit(AnonymousClassDeclaration node) {
+//		java.util.List<String> stringList = new java.util.ArrayList<>();
+//		stringList = stringList.stream().map(string -> string.toString()).collect(java.util.stream.Collectors.toList());
+//
+//		// there might be metrics that use it
+//		// (even before an anonymous class is created)
+//		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+//		if(!classes.peek().methods.isEmpty())
+//			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+//
+//		// we give the anonymous class a 'class$AnonymousN' name
+//		String anonClassName = classes.peek().result.getClassName() + "$Anonymous" + ++anonymousNumber;
+//		CKClassResult currentClass = new CKClassResult(sourceFilePath, anonClassName, "anonymous", -1);
+//		currentClass.setLoc(calculate(node.toString()));
+//
+//		// create a set of visitors, just for the current class
+//		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors();
+//
+//		// store everything in a 'class in the stack' data structure
+//		ClassInTheStack classInTheStack = new ClassInTheStack();
+//		classInTheStack.result = currentClass;
+//		classInTheStack.classLevelMetrics = classLevelMetrics;
+//
+//		// push it to the stack, so we know the current class we are visiting
+//		classes.push(classInTheStack);
+//
+//		// and there might be metrics that also use the methoddeclaration node.
+//		// so, let's call them
+//		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+//		if(!classes.peek().methods.isEmpty())
+//			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
+//
+//		return true;
+//	}
+//
+//	public void endVisit(AnonymousClassDeclaration node) {
+//
+//		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
+//
+//		ClassInTheStack completedClass = classes.pop();
+//
+//		// persist the results of the class level metrics in the result
+//		completedClass.classLevelMetrics.forEach(m -> m.setResult(completedClass.result));
+//
+//		// we are done processing this class, so now let's
+//		// store it in the collected classes set
+//		collectedClasses.add(completedClass.result);
+//	}
 
 	// static blocks
 	public boolean visit(Initializer node) {
