@@ -16,59 +16,11 @@ public class ResultWriter {
 
             /* OO Metrics */
             "cbo",
-            "wmc",
             "dit",
             "rfc",
-            "lcom",
-            "tcc",
-            "lcc",
-
-            /* Method Counting */
-            "totalMethodsQty",
-            "staticMethodsQty",
-            "publicMethodsQty",
-            "privateMethodsQty",
-            "protectedMethodsQty",
-            "defaultMethodsQty",
-            "visibleMethodsQty",
-            "abstractMethodsQty",
-            "finalMethodsQty",
-            "synchronizedMethodsQty",
-
-            /* Field Counting */
-            "totalFieldsQty",
-            "staticFieldsQty",
-            "publicFieldsQty",
-            "privateFieldsQty",
-            "protectedFieldsQty",
-            "defaultFieldsQty",
-            "finalFieldsQty",
-            "synchronizedFieldsQty",
-
-            /* Others */
-            "nosi",
-            "loc",
-            "returnQty",
-            "loopQty",
-            "comparisonsQty",
-            "tryCatchQty",
-            "parenthesizedExpsQty",
-            "stringLiteralsQty",
-            "numbersQty",
-            "assignmentsQty",
-            "mathOperationsQty",
-            "variablesQty",
-            "maxNestedBlocksQty",
-            "anonymousClassesQty",
-            "innerClassesQty",
-            "lambdasQty",
-            "uniqueWordsQty",
-            "modifiers",
-            "logStatementsQty"};
-    private static final String[] METHOD_HEADER = { "file", "class", "method", "constructor", "line", "cbo", "wmc", "rfc", "loc",
-            "returnsQty", "variablesQty", "parametersQty", "methodsInvokedQty", "methodsInvokedLocalQty", "methodsInvokedIndirectLocalQty", "loopQty", "comparisonsQty", "tryCatchQty",
-            "parenthesizedExpsQty", "stringLiteralsQty", "numbersQty", "assignmentsQty", "mathOperationsQty",
-            "maxNestedBlocksQty", "anonymousClassesQty", "innerClassesQty", "lambdasQty", "uniqueWordsQty", "modifiers", "logStatementsQty", "hasJavaDoc" };
+            "lcom"
+    };
+    private static final String[] METHOD_HEADER = { "file", "class", "method", "constructor", "line", "cbo", "rfc" };
     private static final String[] VAR_FIELD_HEADER = { "file", "class", "method", "variable", "usage" };
     private final boolean variablesAndFields;
 
@@ -80,7 +32,7 @@ public class ResultWriter {
     /**
      * Initialise a new ResultWriter that writes to the specified files. Begins by
      * writing CSV headers to each file.
-     * 
+     *
      * @param classFile    Output file for class metrics
      * @param methodFile   Output file for method metrics
      * @param variableFile Output file for variable metrics
@@ -105,7 +57,7 @@ public class ResultWriter {
     /**
      * Print results for a single class and its methods and fields to the
      * appropriate CSVPrinters.
-     * 
+     *
      * @param result The CKClassResult
      * @throws IOException If output files cannot be written to
      */
@@ -117,67 +69,26 @@ public class ResultWriter {
 
                 /* OO Metrics */
                 result.getCbo(),
-                result.getWmc(),
+                //result.getWmc(),
                 result.getDit(),
                 result.getRfc(),
-                result.getLcom(),
-                result.getTightClassCohesion(),
-                result.getLooseClassCohesion(),
+                result.getLcom()
+                //result.getTightClassCohesion(),
+                //result.getLooseClassCohesion(),
 
                 /* Method Counting */
-                result.getNumberOfMethods(),
-                result.getNumberOfStaticMethods(),
-                result.getNumberOfPublicMethods(),
-                result.getNumberOfPrivateMethods(),
-                result.getNumberOfProtectedMethods(),
-                result.getNumberOfDefaultMethods(),
-                result.getVisibleMethods().size(),
-                result.getNumberOfAbstractMethods(),
-                result.getNumberOfFinalMethods(),
-                result.getNumberOfSynchronizedMethods(),
+
 
                 /* Field Counting */
-                result.getNumberOfFields(),
-                result.getNumberOfStaticFields(),
-                result.getNumberOfPublicFields(),
-                result.getNumberOfPrivateFields(),
-                result.getNumberOfProtectedFields(),
-                result.getNumberOfDefaultFields(),
-                result.getNumberOfFinalFields(),
-                result.getNumberOfSynchronizedFields(),
+
 
                 /* Others */
-                result.getNosi(),
-                result.getLoc(),
-                result.getReturnQty(),
-                result.getLoopQty(),
-                result.getComparisonsQty(),
-                result.getTryCatchQty(),
-                result.getParenthesizedExpsQty(),
-                result.getStringLiteralsQty(),
-                result.getNumbersQty(),
-                result.getAssignmentsQty(),
-                result.getMathOperationsQty(),
-                result.getVariablesQty(),
-                result.getMaxNestedBlocks(),
-                result.getAnonymousClassesQty(),
-                result.getInnerClassesQty(),
-                result.getLambdasQty(),
-                result.getUniqueWordsQty(),
-                result.getModifiers(),
-                result.getNumberOfLogStatements());
+        );
 
         for (CKMethodResult method : result.getMethods()) {
             this.methodPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
                     method.isConstructor(),
-                    method.getStartLine(), method.getCbo(), method.getWmc(), method.getRfc(), method.getLoc(),
-                    method.getReturnQty(), method.getVariablesQty(), method.getParametersQty(),
-                    method.getMethodInvocations().size(), method.getMethodInvocationsLocal().size(), method.getMethodInvocationsIndirectLocal().size(),
-                    method.getLoopQty(), method.getComparisonsQty(), method.getTryCatchQty(),
-                    method.getParenthesizedExpsQty(), method.getStringLiteralsQty(), method.getNumbersQty(),
-                    method.getAssignmentsQty(), method.getMathOperationsQty(), method.getMaxNestedBlocks(),
-                    method.getAnonymousClassesQty(), method.getInnerClassesQty(), method.getLambdasQty(),
-                    method.getUniqueWordsQty(), method.getModifiers(), method.getLogStatementsQty(), method.getHasJavadoc());
+                    method.getStartLine(), method.getCbo(), method.getRfc());
 
             if(variablesAndFields) {
                 for (Map.Entry<String, Integer> entry : method.getVariablesUsage().entrySet()) {
@@ -196,7 +107,7 @@ public class ResultWriter {
     /**
      * Flush and close resources that were opened to write results. This method
      * should be called after all CKClassResults have been calculated and printed.
-     * 
+     *
      * @throws IOException If the resources cannot be closed
      */
     public void flushAndClose() throws IOException {
