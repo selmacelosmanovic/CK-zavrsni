@@ -42,16 +42,16 @@ public class ResultWriter {
     public ResultWriter(String classFile, String methodFile, String variableFile, String fieldFile, boolean variablesAndFields) throws IOException {
         FileWriter classOut = new FileWriter(classFile);
         this.classPrinter = new CSVPrinter(classOut, CSVFormat.DEFAULT.withHeader(CLASS_HEADER));
-        FileWriter methodOut = new FileWriter(methodFile);
-        this.methodPrinter = new CSVPrinter(methodOut, CSVFormat.DEFAULT.withHeader(METHOD_HEADER));
+        //FileWriter methodOut = new FileWriter(methodFile);
+        //this.methodPrinter = new CSVPrinter(methodOut, CSVFormat.DEFAULT.withHeader(METHOD_HEADER));
 
         this.variablesAndFields = variablesAndFields;
-        if(variablesAndFields) {
-            FileWriter variableOut = new FileWriter(variableFile);
-            this.variablePrinter = new CSVPrinter(variableOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
-            FileWriter fieldOut = new FileWriter(fieldFile);
-            this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
-        }
+//        if(variablesAndFields) {
+//            FileWriter variableOut = new FileWriter(variableFile);
+//            this.variablePrinter = new CSVPrinter(variableOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+//            FileWriter fieldOut = new FileWriter(fieldFile);
+//            this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+//        }
     }
 
     /**
@@ -85,23 +85,23 @@ public class ResultWriter {
                 /* Others */
         );
 
-        for (CKMethodResult method : result.getMethods()) {
-            this.methodPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
-                    method.isConstructor(),
-                    method.getStartLine(), method.getCbo(), method.getRfc());
-
-            if(variablesAndFields) {
-                for (Map.Entry<String, Integer> entry : method.getVariablesUsage().entrySet()) {
-                    this.variablePrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
-                            entry.getKey(), entry.getValue());
-                }
-
-                for (Map.Entry<String, Integer> entry : method.getFieldUsage().entrySet()) {
-                    this.fieldPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
-                            entry.getKey(), entry.getValue());
-                }
-            }
-        }
+//        for (CKMethodResult method : result.getMethods()) {
+//            this.methodPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
+//                    method.isConstructor(),
+//                    method.getStartLine(), method.getCbo(), method.getRfc());
+//
+//            if(variablesAndFields) {
+//                for (Map.Entry<String, Integer> entry : method.getVariablesUsage().entrySet()) {
+//                    this.variablePrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
+//                            entry.getKey(), entry.getValue());
+//                }
+//
+//                for (Map.Entry<String, Integer> entry : method.getFieldUsage().entrySet()) {
+//                    this.fieldPrinter.printRecord(result.getFile(), result.getClassName(), method.getMethodName(),
+//                            entry.getKey(), entry.getValue());
+//                }
+//            }
+//        }
     }
 
     /**
@@ -113,13 +113,13 @@ public class ResultWriter {
     public void flushAndClose() throws IOException {
         this.classPrinter.flush();
         this.classPrinter.close();
-        this.methodPrinter.flush();
-        this.methodPrinter.close();
-        if(variablesAndFields) {
-            this.variablePrinter.flush();
-            this.variablePrinter.close();
-            this.fieldPrinter.flush();
-            this.fieldPrinter.close();
-        }
+        //this.methodPrinter.flush();
+       // this.methodPrinter.close();
+//        if(variablesAndFields) {
+//            this.variablePrinter.flush();
+//            this.variablePrinter.close();
+//            this.fieldPrinter.flush();
+//            this.fieldPrinter.close();
+//        }
     }
 }
