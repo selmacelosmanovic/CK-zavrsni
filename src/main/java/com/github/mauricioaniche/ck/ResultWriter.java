@@ -5,7 +5,6 @@ import org.apache.commons.csv.CSVPrinter;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Map;
 
 public class ResultWriter {
 
@@ -17,8 +16,8 @@ public class ResultWriter {
             /* OO Metrics */
             "cbo",
             "dit",
-            "rfc",
-            "lcom"
+            "rfc"/*,
+            "lcom"*/
     };
     private static final String[] METHOD_HEADER = { "file", "class", "method", "constructor", "line", "cbo", "rfc" };
     private static final String[] VAR_FIELD_HEADER = { "file", "class", "method", "variable", "usage" };
@@ -71,8 +70,8 @@ public class ResultWriter {
                 result.getCbo(),
                 //result.getWmc(),
                 result.getDit(),
-                result.getRfc(),
-                result.getLcom()
+                result.getRfc()
+                //result.getLcom()
                 //result.getTightClassCohesion(),
                 //result.getLooseClassCohesion(),
 
