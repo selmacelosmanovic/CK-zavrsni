@@ -14,7 +14,7 @@ public class ResultWriter {
             "type",
 
             /* OO Metrics */
-            "cbo",
+           // "cbo",
             "dit",
             "rfc"/*,
             "lcom"*/
@@ -67,7 +67,7 @@ public class ResultWriter {
                 result.getType(),
 
                 /* OO Metrics */
-                result.getCbo(),
+               // result.getCbo(),
                 //result.getWmc(),
                 result.getDit(),
                 result.getRfc()
